@@ -26,6 +26,11 @@ function world.new(settings)
     self:makeRoom(x, y)
     local lastX = x
     local lastY = y
+
+    local dis = math.sqrt((self.spawnX-x)^2+(self.spawnY-y)^2)
+    local lastDis = dis
+    local farthestX = x
+    local farthestY = y
     
     local roomAmount = math.random(5, 20)
     for i = 0, roomAmount do
@@ -55,14 +60,34 @@ function world.new(settings)
             elseif (dir == 4) then
                 self.map[y+math.floor(self.roomSize/2)][x+self.roomSize].tile = tile.new({x = x+self.roomSize, y = y+math.floor(self.roomSize/2), type = Tiles.dirt})
             end
+
+            local itemAmount = math.random(0, 3)
+            for i = 0, itemAmount do
+                local itemX = math.random(x, x+self.roomSize)
+                local itemY = math.random(y, y+self.roomSize)
+                if (self.map[itemY][itemX].tile.type == Tiles.dirt) then
+                    if (math.random(0, 1) == 0) then
+                        self:addItem(coin.new({x = itemX, y = itemY}))
+                    else
+                        self:addItem(sword.new({x = itemX, y = itemY}))
+                    end
+                end
+            end
         else
             x = lastX
             y = lastY
         end
+
+        dis = math.sqrt((self.spawnX-x)^2+(self.spawnY-y)^2)
+        if (dis > lastDis) then
+            lastDis = dis
+            farthestX = x
+            farthestY = y
+        end
     end
 
-    x = x+math.floor(self.roomSize/2)
-    y = y+math.floor(self.roomSize/2)
+    x = farthestX+math.floor(self.roomSize/2)
+    y = farthestY+math.floor(self.roomSize/2)
 
     self.map[y][x].tile = tile.new({x = x, y = y, type = Tiles.exit})
 
@@ -97,15 +122,7 @@ function world:makeRoom(roomX, roomY)
                 end
             end
         end
-
-        local itemAmount = math.random(0, 3)
-        for i = 0, itemAmount do
-            x = math.random(roomX, roomX+self.roomSize)
-            y = math.random(roomY, roomY+self.roomSize)
-            if (self.map[y][x].tile.type == Tiles.dirt) then
-                self:addItem(coin.new({x = x, y = y}))
-            end
-        end
+        
         return true
     else
         return false

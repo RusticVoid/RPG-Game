@@ -8,6 +8,7 @@ function love.load()
 	
 	-- Init Game
 	initTextures()
+	initItemClasses()
 	canvasWidth = 320
 	canvasHeight = 240
 
@@ -41,6 +42,10 @@ function love.load()
 	debug = false
 
 	scale = math.min(windowWidth / canvasWidth, windowHeight / canvasHeight)
+end
+
+function love.keypressed(key)
+	Player:keypressed(key)
 end
 
 function love.update(dt)

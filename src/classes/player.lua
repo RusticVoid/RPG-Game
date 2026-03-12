@@ -20,21 +20,40 @@ function player.new(settings)
     self.floorItem = nil
 
     self.inventory = {}
+    self.maxInvSlots = 12
+    self.inventoryOpen = false
     self.coins = 0
 
     return self
 end
 
+function player:giveItem(item)
+    if (#self.inventory >= self.maxInvSlots) then
+        return false
+    else
+        table.insert(self.inventory, item)
+        return true
+    end
+end
+function player:removeItemFromSlot(slot)
+    table.remove(taget.inventory, slot)
+end
+
+function player:keypressed(key)
+    if (key == "e") then
+        self.inventoryOpen = not self.inventoryOpen
+    end
+end
+
 function player:update(dt)
 
     if (not (World.map[math.floor(self.y)][math.floor(self.x)].item == nil)) then
-        World.map[math.floor(self.y)][math.floor(self.x)].item:pickup(self)
-        World.map[math.floor(self.y)][math.floor(self.x)].item = nil
+        if (self.moving == false) then
+            World.map[math.floor(self.y)][math.floor(self.x)].item:pickup(self)
+        end
     end
 
     if (self.moving == false) then
-        self.dir = 1
-
         self.pastX = self.x
         self.pastY = self.y
 
@@ -106,4 +125,13 @@ function player:draw()
     love.graphics.setColor(0.8, 0.5, 0.1)
 	love.graphics.print("Coins: "..self.coins, 0, font:getHeight())
     love.graphics.setColor(1,1,1,1)
+
+    if (self.inventoryOpen) then
+        local invPos = {x = 0, y = canvasHeight-textures["inventory"]:getHeight()}
+        
+        love.graphics.draw(textures["inventory"], invPos.x, invPos.y)
+        for i = 1, #self.inventory do
+            love.graphics.draw(self.inventory[i].texture, ((i - 1) % 4) * (tileSize + 1) + 3, invPos.y + 3 + math.floor((i - 1) / 4) * (tileSize + 1))
+        end
+    end
 end
