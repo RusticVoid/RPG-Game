@@ -9,10 +9,10 @@ function love.load()
 	-- Init Game
 	initTextures()
 	initItemClasses()
-	canvasWidth = 320
-	canvasHeight = 240
+	canvasWidth = 480 -- 320 / 480 / 1650
+	canvasHeight = 320 -- 240 / 320 / 1650
 
-	windowScale = 3
+	windowScale = 3 -- 3 / 0.6
 	love.window.setMode(canvasWidth*windowScale, canvasHeight*windowScale)
 
 	canvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
@@ -30,11 +30,18 @@ function love.load()
 		wall =  {texture = textures["wall"],  collision = true},
 		empty = {texture = textures["empty"], collision = false},
 		exit =  {texture = textures["exit"],  collision = false},
+		grass =  {texture = textures["grass"],  collision = false},
+		water =  {texture = textures["water"],  collision = false},
+	}
+
+	poiTypes = {
+		dungeon =  {texture = textures["dungeon"], class = dungeon},
 	}
 
 	World = world.new({width = 100, height = 100})
+	currentLocation = World
 
-	Player = player.new({x = World.spawnX, y = World.spawnY})
+	Player = player.new({x = currentLocation.spawnX, y = currentLocation.spawnY})
 
 	Camera = camera.new()
 	Camera.target = Player
@@ -45,21 +52,21 @@ function love.load()
 end
 
 function love.keypressed(key)
-	Player:keypressed(key)
+	Player:keypressed(key, currentLocation)
 end
 
 function love.update(dt)
     windowWidth, windowHeight = love.graphics.getDimensions()
 	scale = math.min(windowWidth / canvasWidth, windowHeight / canvasHeight)
 
-	Player:update(dt)
+	Player:update(dt, currentLocation)
 	Camera:update()
 end
 
 function love.draw()
 	love.graphics.setCanvas(canvas)
 		love.graphics.clear()
-		World:draw()
+		currentLocation:draw()
 		Player:draw()
 		love.graphics.print("FPS: "..love.timer.getFPS())
 	love.graphics.setCanvas()

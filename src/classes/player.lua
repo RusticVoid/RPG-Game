@@ -39,44 +39,55 @@ function player:removeItemFromSlot(slot)
     table.remove(taget.inventory, slot)
 end
 
-function player:keypressed(key)
-    if (key == "e") then
+function player:keypressed(key, location)
+    if (key == "q") then
         self.inventoryOpen = not self.inventoryOpen
+    end
+
+    if (self.moving == false) then
+        if (love.keyboard.isDown("e")) then
+            if (not (location.map[math.floor(self.y)][math.floor(self.x)].item == nil)) then
+                location.map[math.floor(self.y)][math.floor(self.x)].item:pickup(self, location)
+            end
+
+            if (not (location.map[math.floor(self.y)][math.floor(self.x)].location == nil)) then
+                location.map[math.floor(self.y)][math.floor(self.x)].location:enter(self)
+            end
+
+            if (not (location.map[math.floor(self.y)][math.floor(self.x)].tile == nil)) then
+                if (location.map[math.floor(self.y)][math.floor(self.x)].tile.type == Tiles.exit) then
+                    location:exit(self)
+                end
+            end
+        end
     end
 end
 
-function player:update(dt)
-
-    if (not (World.map[math.floor(self.y)][math.floor(self.x)].item == nil)) then
-        if (self.moving == false) then
-            World.map[math.floor(self.y)][math.floor(self.x)].item:pickup(self)
-        end
-    end
-
+function player:update(dt, location)
     if (self.moving == false) then
         self.pastX = self.x
         self.pastY = self.y
 
         if (love.keyboard.isDown("s")) then
-            if (World.map[self.y+1][self.x].tile.collision == false) then
+            if (location.map[self.y+1][self.x].tile.type.collision == false) then
                 self.dir = 1
                 self.moving = true
                 self.currentFrame = 1
             end
         elseif (love.keyboard.isDown("w")) then
-            if (World.map[self.y-1][self.x].tile.collision == false) then
+            if (location.map[self.y-1][self.x].tile.type.collision == false) then
                 self.dir = 2
                 self.moving = true
                 self.currentFrame = 1
             end
         elseif (love.keyboard.isDown("d")) then
-            if (World.map[self.y][self.x+1].tile.collision == false) then
+            if (location.map[self.y][self.x+1].tile.type.collision == false) then
                 self.dir = 3
                 self.moving = true
                 self.currentFrame = 1
             end
         elseif (love.keyboard.isDown("a")) then
-            if (World.map[self.y][self.x-1].tile.collision == false) then
+            if (location.map[self.y][self.x-1].tile.type.collision == false) then
                 self.dir = 4
                 self.moving = true
                 self.currentFrame = 1

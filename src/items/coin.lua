@@ -12,9 +12,9 @@ function coin.new(settings)
     return self
 end
 
-function coin:pickup(taget)
+function coin:pickup(taget, location)
     taget.coins = taget.coins + math.random(1, 4)
-    World.map[math.floor(self.y)][math.floor(self.x)].item = nil
+    location.map[math.floor(self.y)][math.floor(self.x)].item = nil
 end
 
 function coin:draw()

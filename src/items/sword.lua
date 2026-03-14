@@ -12,9 +12,9 @@ function sword.new(settings)
     return self
 end
 
-function sword:pickup(taget)
+function sword:pickup(taget, location)
     if (taget:giveItem(self)) then
-        World.map[math.floor(self.y)][math.floor(self.x)].item = nil
+        location.map[math.floor(self.y)][math.floor(self.x)].item = nil
     end
 end
 

@@ -8,9 +8,6 @@ function tile.new(settings)
     self.y = settings.y
 
     self.type = settings.type
-    
-    self.texture = settings.type.texture
-    self.collision = settings.type.collision
 
     return self
 end
@@ -19,5 +16,5 @@ function tile:update(dt)
 end
 
 function tile:draw()
-    love.graphics.draw(self.texture, (self.x * tileSize)-Camera.offX, (self.y * tileSize)-Camera.offY)
+    love.graphics.draw(self.type.texture, (self.x * tileSize)-Camera.offX, (self.y * tileSize)-Camera.offY)
 end
