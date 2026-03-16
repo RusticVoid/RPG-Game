@@ -22,10 +22,6 @@ function initTextures()
 	end
 end
 
-function initItemClasses()
-	initClassesInDir("items")
-end
-
 function initClasses()
 	initClassesInDir("classes")
 end
@@ -49,4 +45,12 @@ function initClassesInDir(dir)
 			end
 		end
 	end
+end
+
+function addPOI(location, poi)
+    location.map[poi.y][poi.x].poi = poi
+end
+
+function addItem(location, item)
+    location.map[item.y][item.x].item = item
 end

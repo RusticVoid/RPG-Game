@@ -9,7 +9,7 @@ function poi.new(settings)
 
     self.type = settings.type
 
-    self.info = self.type.class.new({width = 100, height = 100, exitInfo = {location = settings.location, x = self.x, y = self.y}})
+    self.info = self.type.class.new({width = settings.width, height = settings.height, exitInfo = {location = settings.exitLocation, x = self.x, y = self.y}})
 
     return self
 end
@@ -21,5 +21,10 @@ function poi:enter(target)
 end
 
 function poi:draw()
-    love.graphics.draw(self.type.texture, (self.x * tileSize)-Camera.offX, (self.y * tileSize)-Camera.offY)
+    if (((self.x * tileSize)-Camera.offX > -tileSize) and 
+        ((self.x * tileSize)-Camera.offX < canvasWidth) and
+        ((self.y * tileSize)-Camera.offY > -tileSize) and 
+        ((self.y * tileSize)-Camera.offY < canvasHeight)) then
+        love.graphics.draw(self.type.texture, (self.x * tileSize)-Camera.offX, (self.y * tileSize)-Camera.offY)
+    end
 end

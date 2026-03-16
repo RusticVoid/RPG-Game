@@ -50,8 +50,8 @@ function player:keypressed(key, location)
                 location.map[math.floor(self.y)][math.floor(self.x)].item:pickup(self, location)
             end
 
-            if (not (location.map[math.floor(self.y)][math.floor(self.x)].location == nil)) then
-                location.map[math.floor(self.y)][math.floor(self.x)].location:enter(self)
+            if (not (location.map[math.floor(self.y)][math.floor(self.x)].poi == nil)) then
+                location.map[math.floor(self.y)][math.floor(self.x)].poi:enter(self)
             end
 
             if (not (location.map[math.floor(self.y)][math.floor(self.x)].tile == nil)) then
@@ -69,25 +69,25 @@ function player:update(dt, location)
         self.pastY = self.y
 
         if (love.keyboard.isDown("s")) then
-            if (location.map[self.y+1][self.x].tile.type.collision == false) then
+            if ((self.y+1 <= location.height) and (location.map[self.y+1][self.x].tile.type.collision == false)) then
                 self.dir = 1
                 self.moving = true
                 self.currentFrame = 1
             end
         elseif (love.keyboard.isDown("w")) then
-            if (location.map[self.y-1][self.x].tile.type.collision == false) then
+            if ((self.y-1 >= 0) and (location.map[self.y-1][self.x].tile.type.collision == false)) then
                 self.dir = 2
                 self.moving = true
                 self.currentFrame = 1
             end
         elseif (love.keyboard.isDown("d")) then
-            if (location.map[self.y][self.x+1].tile.type.collision == false) then
+            if ((self.x+1 <= location.width) and (location.map[self.y][self.x+1].tile.type.collision == false)) then
                 self.dir = 3
                 self.moving = true
                 self.currentFrame = 1
             end
         elseif (love.keyboard.isDown("a")) then
-            if (location.map[self.y][self.x-1].tile.type.collision == false) then
+            if ((self.x-1 >= 0) and location.map[self.y][self.x-1].tile.type.collision == false) then
                 self.dir = 4
                 self.moving = true
                 self.currentFrame = 1

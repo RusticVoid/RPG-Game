@@ -13,7 +13,7 @@ function world.new(settings)
     for y = 0, self.height do
         self.map[y] = {}
         for x = 0, self.width do
-            self.map[y][x] = {tile = tile.new({x = x, y = y, type = Tiles.empty}), location, height = math.random()}
+            self.map[y][x] = {tile = tile.new({x = x, y = y, type = Tiles.empty}), poi, height = math.random()}
         end
     end
 
@@ -46,10 +46,15 @@ function world.new(settings)
 
     for y = 0, self.height do
         for x = 0, self.width do
+            self.map[y][x].tile.type = Tiles.water
             if (self.map[y][x].height > 0.5) then
                 self.map[y][x].tile.type = Tiles.grass
-            else
-                self.map[y][x].tile.type = Tiles.water
+            end
+            if (self.map[y][x].height > 0.52) then
+                self.map[y][x].tile.type = Tiles.forest
+            end
+            if (self.map[y][x].height > 0.54) then
+                self.map[y][x].tile.type = Tiles.mountain
             end
         end
     end
@@ -58,7 +63,25 @@ function world.new(settings)
         local x = math.random(0, self.width)
         local y = math.random(0, self.height)
         if (self.map[y][x].tile.type == Tiles.grass) then
-            self:addLocation(poi.new({x = x, y = y, type = poiTypes.dungeon, location = self}))
+            if (math.random(0, 1) == 1) then
+                addPOI(self, poi.new({
+                    x = x, 
+                    y = y, 
+                    width = 100, 
+                    height = 100, 
+                    type = poiTypes.dungeon, 
+                    exitLocation = self
+                }))
+            else
+                addPOI(self, poi.new({
+                    x = x, 
+                    y = y, 
+                    width = 20, 
+                    height = 20, 
+                    type = poiTypes.town, 
+                    exitLocation = self
+                }))
+            end
         end
     end
 
@@ -83,13 +106,9 @@ function world:draw()
     for y = 0, self.width do
         for x = 0, self.height do
             self.map[y][x].tile:draw()
-            if (not (self.map[y][x].location == nil)) then
-                self.map[y][x].location:draw()
+            if (not (self.map[y][x].poi == nil)) then
+                self.map[y][x].poi:draw()
             end
         end
     end
-end
-
-function world:addLocation(location)
-    self.map[location.y][location.x].location = location
 end

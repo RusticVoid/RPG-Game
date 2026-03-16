@@ -67,9 +67,9 @@ function dungeon.new(settings)
                 local itemY = math.random(y, y+self.roomSize)
                 if (self.map[itemY][itemX].tile.type == Tiles.dirt) then
                     if (math.random(0, 1) == 0) then
-                        self:addItem(coin.new({x = itemX, y = itemY}))
+                        addItem(self, coin.new({x = itemX, y = itemY}))
                     else
-                        self:addItem(sword.new({x = itemX, y = itemY}))
+                        addItem(self, sword.new({x = itemX, y = itemY}))
                     end
                 end
             end
@@ -130,8 +130,4 @@ function dungeon:makeRoom(roomX, roomY)
     else
         return false
     end
-end
-
-function dungeon:addItem(item)
-    self.map[item.y][item.x].item = item
 end

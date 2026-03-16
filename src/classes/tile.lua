@@ -16,5 +16,10 @@ function tile:update(dt)
 end
 
 function tile:draw()
-    love.graphics.draw(self.type.texture, (self.x * tileSize)-Camera.offX, (self.y * tileSize)-Camera.offY)
+    if (((self.x * tileSize)-Camera.offX > -tileSize) and 
+        ((self.x * tileSize)-Camera.offX < canvasWidth) and
+        ((self.y * tileSize)-Camera.offY > -tileSize) and 
+        ((self.y * tileSize)-Camera.offY < canvasHeight)) then
+        love.graphics.draw(self.type.texture, (self.x * tileSize)-Camera.offX, (self.y * tileSize)-Camera.offY)
+    end
 end
