@@ -1,6 +1,7 @@
 [
-    ["wall", "wall",  "wall", "wall"],
-    ["wall", "empty", "empty", "wall"],
-    ["wall", "empty", "water", "wall"],
-    ["wall", "wall",  "empty", "wall"]
+    ["wall", "wall", "wall",  "wall", "wall"],
+    ["wall", "floor", "floor",  "floor", "wall"],
+    ["wall", "floor", "water", "floor", "wall"],
+    ["wall", "floor", "floor",  "floor", "wall"],
+    ["wall", "wall", "floor",  "wall", "wall"]
 ]
