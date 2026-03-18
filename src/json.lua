@@ -194,7 +194,8 @@ end
 -- EXTENDED BY RUSTICVOID
 
 function json.loadFile(filePath)
-    return json.parse(io.open(filePath):read("a"))
+    file = io.open(filePath):read("a")
+    return json.parse(file)
 end
 
 return json

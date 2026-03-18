@@ -1,12 +1,13 @@
 require "utils"
-initClasses()
+loadClasses("classes")
 
 function love.load()
 	-- Init Love2d
 	initLove()
 	
 	-- Init Game
-	initTextures()
+	love.graphics.setDefaultFilter("nearest", "nearest")
+	textures = loadTextures("assets")
 	canvasWidth = 480 -- 320 / 480 / 1650
 	canvasHeight = 320 -- 240 / 320 / 1650
 
@@ -26,20 +27,15 @@ function love.load()
 	-- Global Variables
 	tileSize = 16
 
-	initClassesInDir("items")
-	Tiles = {
-		dirt =  {texture = textures["dirt"],  collision = false},
-		wall =  {texture = textures["wall"],  collision = true},
-		empty = {texture = textures["empty"], collision = false},
-		exit =  {texture = textures["exit"],  collision = false},
-		grass =  {texture = textures["grass"],  collision = false},
-		water =  {texture = textures["water"],  collision = true},
-		mountain =  {texture = textures["mountain"],  collision = true},
-		forest =  {texture = textures["forest"],  collision = true},
-		floor =  {texture = textures["floor"],  collision = false},
-	}
+	loadClasses("items")
+	Tiles = loadTiles("tiles")
+	--Tiles = {
+	--	empty = {texture = textures["empty"], collision = false},
+	--	exit =  {texture = textures["exit"],  collision = false},
+	--	floor =  {texture = textures["floor"],  collision = false},
+	--}
 
-	initClassesInDir("POIS")
+	loadClasses("POIS")
 	poiTypes = {
 		dungeon =  {texture = textures["dungeon"], class = dungeon},
 		town =  {texture = textures["town"], class = town},

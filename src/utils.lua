@@ -1,48 +1,44 @@
+json = require("json")
+
 function initLove()
     math.randomseed(os.clock())
     windowWidth, windowHeight = love.graphics.getDimensions()
 	love.keyboard.setKeyRepeat(true)
 end
 
-function initTextures()
-	love.graphics.setDefaultFilter("nearest", "nearest")
+function loadTextures(dir)
 	OpSys = love.system.getOS()
 
-	textures = {}
+	local textures = {}
 
 	if (OpSys == "Windows") then
-		for file in io.popen([[dir ".\src\assets"]]):lines() do
-			textures[string.gsub(file, ".png", "")] = love.graphics.newImage("assets/"..file)
-		end
+		files = io.popen([[dir ".\src\"]]..dir):lines()
 	end
 	if (OpSys == "Linux") then
-		for file in io.popen([[ls ./src/assets]]):lines() do
-			textures[string.gsub(file, ".png", "")] = love.graphics.newImage("assets/"..file)
-		end
+		files = io.popen([[ls ./src/]]..dir):lines()
 	end
+
+	for file in files do
+		textures[string.gsub(file, ".png", "")] = love.graphics.newImage(dir.."/"..file)
+	end
+
+	return textures
 end
 
-function initClasses()
-	initClassesInDir("classes")
-end
-
-function initClassesInDir(dir)
+function loadClasses(dir)
 	OpSys = love.system.getOS()
 
 	if (OpSys == "Windows") then
-		for file in io.popen([[dir ".\src\"]]..dir):lines() do
-			local classFile, count = string.gsub(file, ".lua", "")
-			if (tonumber(count) > 0) then
-				require (dir.."."..classFile)
-			end
-		end
+		files = io.popen([[dir ".\src\"]]..dir):lines()
 	end
 	if (OpSys == "Linux") then
-		for file in io.popen([[ls ./src/]]..dir):lines() do
-			local classFile, count = string.gsub(file, ".lua", "")
-			if (tonumber(count) > 0) then
-				require (dir.."."..classFile)
-			end
+		files = io.popen([[ls ./src/]]..dir):lines()
+	end
+
+	for file in files do
+		local classFile, count = string.gsub(file, ".lua", "")
+		if (tonumber(count) > 0) then
+			require (dir.."."..classFile)
 		end
 	end
 end
@@ -53,4 +49,23 @@ end
 
 function addItem(location, item)
     location.map[item.y][item.x].item = item
+end
+
+function loadTiles(dir)
+	OpSys = love.system.getOS()
+
+	local tiles = {}
+
+	if (OpSys == "Windows") then
+		files = io.popen([[dir ".\src\"]]..dir):lines()
+	end
+	if (OpSys == "Linux") then
+		files = io.popen([[ls ./src/]]..dir):lines()
+	end
+
+	for file in files do
+		tiles[string.gsub(file, ".json", "")] = json.loadFile("./src/"..dir.."/"..file)
+	end
+
+	return tiles
 end
