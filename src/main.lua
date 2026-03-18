@@ -29,12 +29,7 @@ function love.load()
 
 	loadClasses("items")
 	Tiles = loadTiles("tiles")
-	--Tiles = {
-	--	empty = {texture = textures["empty"], collision = false},
-	--	exit =  {texture = textures["exit"],  collision = false},
-	--	floor =  {texture = textures["floor"],  collision = false},
-	--}
-
+	
 	loadClasses("POIS")
 	poiTypes = {
 		dungeon =  {texture = textures["dungeon"], class = dungeon},

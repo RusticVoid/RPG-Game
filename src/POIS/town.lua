@@ -16,7 +16,7 @@ function town.new(settings)
         end
     end
 
-    self:makeHouse(math.random(0, self.width), math.random(0, self.height), 5)
+    self:makeBuilding(math.random(0, self.width-10), math.random(0, self.height-10), "store")
 
     self.spawnX = math.floor(self.width/2)
     self.spawnY = math.floor(self.height/2)
@@ -44,19 +44,20 @@ function town:draw()
 end
 
 
-function town:makeHouse(houseX, houseY, houseSize)
-    if ((houseX > 0) 
-    and (houseY > 0) 
-    and (houseX+houseSize < self.width) 
-    and (houseY+houseSize < self.height)) then
-        for y = houseY, houseY+houseSize do
-            for x = houseX, houseX+houseSize do
-                if ((x == houseX) or (x == houseX+houseSize) or (y == houseY) or (y == houseY+houseSize)) then
-                    if (self.map[y][x].tile.type == Tiles.empty) then
-                        self.map[y][x].tile.type = Tiles.wall
-                    end
-                else
-                    self.map[y][x].tile.type = Tiles.dirt
+function town:makeBuilding(buildingX, buildingY, building)
+    buildingData = json.loadFile("./src/buildings/"..building..".json")
+
+    buildingWidth = #buildingData-1
+    buildingHeight = #buildingData[1]-1
+
+    if ((buildingX > 0)
+    and (buildingY > 0)
+    and (buildingX+buildingWidth < self.width)
+    and (buildingY+buildingHeight < self.height)) then
+        for y = buildingY, buildingY+buildingHeight do
+            for x = buildingX, buildingX+buildingWidth do
+                if (self.map[y][x].tile.type == Tiles.empty) then
+                    self.map[y][x].tile.type = Tiles[buildingData[y-buildingY+1][x-buildingX+1]]
                 end
             end
         end
