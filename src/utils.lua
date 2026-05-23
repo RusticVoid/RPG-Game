@@ -29,7 +29,7 @@ function loadClasses(dir)
 	OpSys = love.system.getOS()
 
 	if (OpSys == "Windows") then
-		files = io.popen([[dir ".\src\"]]..dir):lines()
+		files = io.popen([[dir /b ".\src\"]]..dir):lines()
 	end
 	if (OpSys == "Linux") then
 		files = io.popen([[ls ./src/]]..dir):lines()
